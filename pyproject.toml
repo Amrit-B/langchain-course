@@ -3,12 +3,22 @@ name = "langchain-course"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
+authors = [
+    { name = "Amrit", email = "68595335+Amrit-B@users.noreply.github.com" }
+]
 requires-python = ">=3.11"
 dependencies = [
     "black>=26.1.0",
     "isort>=7.0.0",
     "langchain>=1.2.10",
+    "langchain-google-genai>=4.3.2",
     "langchain-ollama>=1.0.1",
-    "langchain-openai>=1.1.9",
     "python-dotenv>=1.2.1",
 ]
+
+[project.scripts]
+langchain-course = "langchain_course:main"
+
+[build-system]
+requires = ["uv_build>=0.12.3,<0.13.0"]
+build-backend = "uv_build"
