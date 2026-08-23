@@ -94,7 +94,7 @@ def ollama_chat_traced(messages):
 
     # ---- Agent Loop ----
 
-@traceable(name="LangChain Agent loop")
+@traceable(name="Ollama Agent loop")
 def run_agent(question: str):
     tools_dict = {
         "get_product_price": get_product_price,
@@ -145,7 +145,7 @@ def run_agent(question: str):
 
         # Difference 6: Attribute access (. function.name) instead of dict access (.get("name))
         tool_name = tool_call.function.name
-        tool_args = tool_call.arguments
+        tool_args = tool_call.function.arguments
 
         print(f"[tool selected] {tool_name} with args: {tool_args}")
 
@@ -159,6 +159,7 @@ def run_agent(question: str):
 
         print(f" [Tool result] {observation}")
 
+        messages.append(ai_message)
         messages.append(
             {
                 "role": "tool",
@@ -169,7 +170,6 @@ def run_agent(question: str):
             {
                 "role": "tool",
                 "content": str(observation),
-                "tool_call_id": tool_call_id,
             }
         )
 
