@@ -1,4 +1,6 @@
 import os
+from typing import List
+from pydantic import BaseModel, Field
 
 from dotenv import load_dotenv
 
@@ -22,6 +24,14 @@ def search(query: str) -> str:
 
 api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
 
+class Source(BaseModel):
+    """Scheme for a source used by the agent"""
+    url:str = Field(description = "The Url of the source")
+
+class AgentResponse(BaseModel):
+    """Scheme for the response of the agent"""
+    answer:str = Field(description = "The Agent's answer to the question")
+    sources:List[Source] = Field(default_factory= list, description = "The list of sources used by the agent to generate answer")
 
 llm = ChatGoogleGenerativeAI(
     model="gemini-2.5-flash",
@@ -29,7 +39,7 @@ llm = ChatGoogleGenerativeAI(
 )
 
 tools = [search]
-agent = create_agent(model=llm, tools=tools)
+agent = create_agent(model=llm, tools=tools, response_format = AgentResponse)
 
 
 def main():
